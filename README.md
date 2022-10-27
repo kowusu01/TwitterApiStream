@@ -22,7 +22,7 @@ The application architecure emphasizes on this separation of concerns to achive 
 
 
  ## high level architecture
- ![app structure](https://github.com/kowusu01/TwitterApiStream)/blob/main/images/high-level-arch.PNG?raw=true)
+ ![app structure](https://github.com/kowusu01/TwitterApiStream/blob/main/images/high-level-arch.PNG?raw=true)
 
 ## executing the app
 - pull the repo to local file system
@@ -38,7 +38,4 @@ The application architecure emphasizes on this separation of concerns to achive 
 - on a command line, in the same folder, issue the following command:
 
 ``` dotnet run --environment Production  ```
-
-
-
 
