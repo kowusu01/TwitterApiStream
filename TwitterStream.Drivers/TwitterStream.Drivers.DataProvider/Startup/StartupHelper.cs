@@ -13,11 +13,5 @@ namespace TwitterStream
             // builder.Services.AddScoped<ITestService, TestService>();
             // builder.Services.AddScoped<IStudentService, StudentService>();
         }
-
-        public static void TestService(IServiceProvider service)
-        {
-            ITest t = (ITest)service.GetService(typeof(ITest));
-            t.Test();
-        }
     }
 }
