@@ -1,0 +1,86 @@
+﻿// See https://aka.ms/new-console-template for more information
+/////////////////////////////////////////////////////////////////////
+// 
+// https://goessner.net/articles/JsonPath/
+// https://www.newtonsoft.com/json/help/html/SelectToken.htm
+//
+// Twitter API v2 calls
+// Generate an API request by selecting an endpoint and parameters.
+
+
+using System.Net.Http.Headers;
+using System.Text;
+using Newtonsoft.Json.Linq;
+
+Console.WriteLine("Welcome to Twitter streaming!");
+
+string API_AUTH_BEARER_TOKEN = "";
+
+string API_BASE_URL = "";
+string API_PARAMETERS_TWEET_FIELDS = "tweet.fields=author_id,context_annotations,created_at,entities,id,source,text";
+string API_PARAMETERS_USER_FIELDS = "user.fields=created_at,entities,id,name,username";
+string API_PARAMETERS_EXPANSIONS = "expansions=author_id";
+
+//twitterUri = new Uri("https://api.twitter.com/2/tweets/sample/stream?expansions=author_id&tweet.fields=author_id,context_annotations,created_at,entities,id,source,text&user.fields=created_at,entities,id,name,username");
+Uri twitterUri = new Uri($"{API_BASE_URL}?{API_PARAMETERS_TWEET_FIELDS}&{API_PARAMETERS_USER_FIELDS}&{API_PARAMETERS_EXPANSIONS}");
+
+HttpClient httpClient = new HttpClient();
+
+// add token
+httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", API_AUTH_BEARER_TOKEN);
+
+// add request hearders for json
+httpClient.DefaultRequestHeaders
+      .Accept
+      .Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+
+var responseStream = await httpClient.GetStreamAsync(twitterUri);
+
+string data = string.Empty;
+int count = 1;
+
+StringBuilder builder = new StringBuilder();
+
+
+
+using (StreamReader readStream = new StreamReader(responseStream, Encoding.UTF8))
+{
+    while (!readStream.EndOfStream)
+    //while (count < 10)
+        {
+        data = await readStream.ReadLineAsync();
+        if (string.IsNullOrEmpty(data))
+        {
+            break;
+        }
+        builder.Append(data + ", \n");
+
+       // Console.WriteLine(data);
+
+        JObject twitterData = JObject.Parse(data);
+        Console.WriteLine(twitterData["data"]["author_id"]);
+        // find all hastags nodes
+        // this searches for all hashtags directly related to the tweet - data.entities.hashtag.
+        // Note: there could be other hashtags in the other tweets included, but for now those are ignored
+        string jsonPathHashTags = $"$.{TWITTER_JSON_ELEMENT_DATA}.{TWITTER_JSON_ELEMENT_ENTITIES}.{TWITTER_JSON_ELEMENT_HASHTAGS}[*].{TWITTER_JSON_ELEMENT_TAG}";
+        var tags = twitterData.SelectTokens(jsonPathHashTags).ToList();
+
+        if (tags != null && tags.Count() > 0)
+        {
+            //Console.WriteLine($"Num Hashtags: {tags.Count()}");
+            //foreach(JToken t in tags)
+            //{
+            //    Console.WriteLine(t.ToString());
+            //}
+        }
+        
+        count++;
+    }
+}
+
+Console.WriteLine("==========================");
+Console.WriteLine($"Total Tweets: {count}");
+Console.WriteLine("");
+Console.WriteLine("==========================");
+

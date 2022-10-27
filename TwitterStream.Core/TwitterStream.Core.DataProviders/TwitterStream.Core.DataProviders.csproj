@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Models\**" />
+    <Compile Remove="Utils\**" />
+    <EmbeddedResource Remove="Models\**" />
+    <EmbeddedResource Remove="Utils\**" />
+    <None Remove="Models\**" />
+    <None Remove="Utils\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Implementations\KafkaProducer.cs" />
+    <Compile Remove="Interfaces\IObservableList.cs" />
+    <Compile Remove="Interfaces\IStreamObjectReader.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TwitterStream.Core.Common\TwitterStream.Core.Common.csproj" />
+  </ItemGroup>
+
+</Project>
