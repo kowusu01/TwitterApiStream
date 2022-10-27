@@ -20,9 +20,8 @@ The Data Consumers is an example pf an independent process that consumes data as
 
 The application architecure emphasizes on this separation of concerns to achive scalability and performance. For instance, the task of processing the tweets can be cpu and memory intensive, by making the cosumers independent, several instances can be deployed each performing different type of processing and analysis.
 
-
- ## high level architecture
- ![app structure](https://github.com/kowusu01/TwitterApiStream/blob/main/images/high-level-arch.PNG?raw=true)
+## high level architecture
+ ![app structure](https://github.com/kowusu01/TwitterApiStream/blob/main/images/high-level-arch.jpg?raw=true)
 
 ## executing the app
 - pull the repo to local file system
