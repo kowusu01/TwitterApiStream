@@ -4,7 +4,7 @@
 ## intoduction
 The application consumes tweets from Twitter api. It connects to the V2 of the twitter streaming api that serves sample tweets - https://api.twitter.com/2/tweets/sample/stream.
 
-When a streaming channel is opened between the app and Twitter, the app can receive about 1000 tweets per second, based on sample runs. There is a limit on how many times the appi can be called within a specific time frame.
+When a streaming channel is opened between the app and Twitter, the app can receive about 1000 tweets per second, based on sample runs. There is a limit on how many times the api can be called within a specific time frame.
 
 ## how the app is constructed
 The app is designed to be able to handle large amount of data and process it without delay. The high level architecture contains two main logical components:
@@ -34,8 +34,8 @@ The application architecture emphasizes on this separation of concerns to achiev
 
  ## future work
  - set up a Kafka server to publish tweet data
- - configure the Data Provider component to act as a Kafker producer
- - Implement the Data Consumer components and cofigure it to act as Kafks consumer
+ - configure the Data Provider component to act as a Kafka producer
+ - Implement the Data Consumer components and cofigure it to act as Kafka consumer
  - add docker support and dockerize individual projects to run on its own
  - deploy the app in a cluster with producer and consumers
 
