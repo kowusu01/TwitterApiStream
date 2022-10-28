@@ -10,20 +10,20 @@ using TwitterStream.Core.Interfaces;
 namespace TwitterStream.Core.Implementations
 {
     /// <summary>
-    /// Implemenatation for IStreamObjectProducer.
+    /// Implemenatation for IStreamObjectReader.
     /// This class watches for changes to an observable list 
     /// and publishes the items to a Kafka topic for consumption.
     /// </summary>
-    public class TweetStreamProducer : ITweetStreamProducer
+    public class TweetStreamReader : ITweetStreamReader
     {
-        private readonly ILogger<TweetStreamProducer> _logger;
+        private readonly ILogger<TweetStreamReader> _logger;
         
         // for now, we have only one observer to process tweets as they came in
         private IObserver<RawTweet>? _tweetsObserver;
         
         private HttpClient _httpClient = new HttpClient();
 
-        public TweetStreamProducer(ILogger<TweetStreamProducer> logger)
+        public TweetStreamReader(ILogger<TweetStreamReader> logger)
         {
             _logger = logger;          
         }
@@ -38,7 +38,7 @@ namespace TwitterStream.Core.Implementations
 
         public async Task<int> ReadStream()
         {
-            string twitterApiPath = 
+            string twitterApiPath =
                 $"?{TwitterAPIConstants.API_PARAMETERS_TWEET_FIELDS}&" +
                 $"{TwitterAPIConstants.API_PARAMETERS_USER_FIELDS}&" +
                 $"{TwitterAPIConstants.API_PARAMETERS_EXPANSIONS}";
@@ -51,10 +51,11 @@ namespace TwitterStream.Core.Implementations
             using (StreamReader readStream = new StreamReader(responseStream, Encoding.UTF8))
             {
                 while (!readStream.EndOfStream)
-                //while (count < 10)
+                //while (count < 100)
                 {
                     data = await readStream.ReadLineAsync();
                     
+                    // notify our one and only one observer
                     _tweetsObserver.OnNext(new RawTweet() { TweetJsonString = data});
 
                     if (string.IsNullOrEmpty(data))
@@ -62,19 +63,9 @@ namespace TwitterStream.Core.Implementations
                         _tweetsObserver.OnCompleted();
                         break;
                     }                
-
-                    // _logger.LogInformation(data);
-
-                    
                     count++;
                 }
             }
-
-            _logger.LogInformation("==========================");
-            _logger.LogInformation($"Total Tweets: {count}");
-            _logger.LogInformation("");
-            _logger.LogInformation("==========================");
-
             return count;
         }
 

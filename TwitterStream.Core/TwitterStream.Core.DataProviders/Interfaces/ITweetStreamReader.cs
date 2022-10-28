@@ -9,7 +9,7 @@ namespace TwitterStream.Core.Interfaces
     /// It implements the IObservable subscribe/unsubscribe for
     /// observers to get notified when data is ready.
     /// </summary>
-    public interface ITweetStreamProducer : IObservable<RawTweet>
+    public interface ITweetStreamReader : IObservable<RawTweet>
     {
         void ConfigureHttpClient(HttpClientPropertiesDelegate fnSetDbData);
         Task<int> ReadStream();

@@ -7,13 +7,19 @@ namespace TwitterStream.Core.Interfaces
     /// new raw tweets been sent, receive it and process it.
     /// It implements the IObserver.
     /// </summary>
-    public interface ITweetStreamConsumer: IObserver<RawTweet>
+    public interface ITweetStreamProcessor: IObserver<RawTweet>
     {
-        void Subscribe(ITweetStreamProducer producer);
-        //void ConfigureDestination(object setTweetDestinationProperties);      
+        void Subscribe(ITweetStreamReader producer);
+
+        // for future implementation:
+        //void ConfigureDestination(object setTweetDestinationProperties);
+
+        void AddTweetHashTag(string tag);
+        IEnumerable<KeyValuePair<string, int>> GetTopNHashtags(int n);        
     }
 
 
+    // for future implementation:
     // create a delegate for setting destination properties,
     // it can be db connection string to store the data,
     // Kafka server properties, etc

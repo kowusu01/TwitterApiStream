@@ -16,13 +16,29 @@ Data Providers interact with Twitter api using the Observer Pattern subscription
 Within the Data Providers logical component, there is a component that reads the stream; the data is not stored, rather, it passes it to another component to parse it and extract relavant information. The long term goal is to make the entire Data Producer logical component a Kafka producer by allowing it to publish each tweet as a kafka topic so other independent app/services can consume it
 
 ### data consumers
-The Data Consumers component is an example of an independent process that consumes data as Kafka topics published by the Data Providers. These data consumers can be written in any lanuguage; the intent is to allow consumers to determine how to process tweet data and where or how to store it. 
+The Data Consumers component is an example of an independent process that can consumes data as Kafka topics published by the Data Providers. These data consumers can be written in any lanuguage; the intent is to allow consumers to determine how to process tweet data and where or how to store it. 
 
-The application architecure emphasizes on this separation of concerns to achieve scalability and performance. For instance, the task of processing the tweets can be cpu and memory intensive, by making the consumers independent, several instances can be deployed each performing different type of processing and analysis.
+The application architecture emphasizes on this separation of concerns to achieve scalability and performance. For instance, the task of processing the tweets can be cpu and memory intensive, by making the consumers independent, several instances can be deployed each performing different types of processing and analysis.
 
 
  ## high level architecture
  ![app structure](https://github.com/kowusu01/TwitterApiStream/blob/main/images/high-level-arch.jpg?raw=true)
+
+ The following shows the details of the two main classes in the Data Providers component and how they interact to achive its goal.
+ ![app structure](https://github.com/kowusu01/TwitterApiStream/blob/main/images/design-detail.jpg?raw=true)
+
+
+ ## current implementation
+ Currently, only the Data Provider component is implemented. The application is able to connect tp Twitter, read a strem and process it, and extract basic infomration such as number of hashtags.
+
+
+ ## future work
+ - set up a Kafka server to publish tweet data
+ - configure the Data Provider component to act as a Kafker producer
+ - Implement the Data Consumer components and cofigure it to act as Kafks consumer
+ - add docker support and dockerize individual projects to run on its own
+ - deploy the app in a cluster with producer and consumers
+
 
 ## executing the app
 The application will have two entry points called drivers. For instance, there is a driver for the Data Providers, the piece that read the data from Twitter and make it available. 
